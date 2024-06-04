@@ -307,9 +307,17 @@ polar_art(seed = 7, n = 100, palette = sample_canva(seed = 1))
 
 ## INTRODUCTORY EXERCISE 3 Part 1
 
+sample_canva <- function(seed = NULL) { # create function that samples canva palettes at random
+  if(!is.null(seed)) set.seed(seed) 
+  sample(ggthemes::canva_palettes, 1)[[1]] # use canva_palettes from ggthemes package
+}
 
+# use show_col function to visualize different color scheme outputs
 
-
+show_col(canva_palettes[[100]]) # change numbers to get different color palettes
+show_col(canva_palettes[[99]])
+show_col(canva_palettes[[97]])
+show_col(canva_palettes[[95]])
 
 
 ```
