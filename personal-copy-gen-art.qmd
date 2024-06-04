@@ -5,6 +5,9 @@ format: html
 editor: visual
 ---
 
+https://github.com/katie-cheslick/personal-copy-gen-art.git
+
+
 ```{r}
 
 
@@ -97,18 +100,18 @@ dat |> # use dat data set
   ggplot(aes( # create ggplot
     x = x0, # set x axis
     y = y0, # set y axis
-    xend = x1, 
-    yend = y1,
+    xend = x1, # create line from x0 to x1
+    yend = y1, # create line from y0 to y1
     colour = shade, # color diff points by shade variable
     size = size # adjust size of points by size variable
   )) +
-  geom_segment(show.legend = FALSE) +
-  coord_polar() +
-  scale_y_continuous(expand = c(0, 0)) +
-  scale_x_continuous(expand = c(0, 0)) + 
-  scale_color_viridis_c() + 
+  geom_segment(show.legend = FALSE) + # remove legend for line segments
+  coord_polar() + # create radial plotting of points
+  scale_y_continuous(expand = c(0, 0)) + # remove extra empty space around plot
+  scale_x_continuous(expand = c(0, 0)) + # remove extra empty space around plot
+  scale_color_viridis_c() + # set color scheme
   scale_size(range = c(0, 10)) + 
-  theme_void()
+  theme_void() # remove graph lines and tickmarks 
 
 
 ```
