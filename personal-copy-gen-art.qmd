@@ -57,7 +57,7 @@ mpg |> # use mpg data set
 ```{r}
 
 
-## EXERCISE 
+## EXERCISE 1
 
 mpg |> # use mpg data set
   ggplot(aes(displ, hwy)) + # use certain columns from data set
@@ -179,7 +179,7 @@ polar_art(seed = 2, n = 50, palette = c("red", "black", "white"))
 ```{r}
 
 
-## EXERCISE
+## EXERCISE 2 Part 1
 
 # manipulate polar art function to create my own pieces
 
@@ -194,11 +194,11 @@ polar_art(seed = 1, n = 10000, palette = c("yellow", "black", "blue"))
 ```{r}
 
 
-## EXERCISE
+## EXERCISE 2 Part 2
 
 # alter polar art function
 
-polar_art <- function(seed, n, palette) { # create function of seed, n, and palette
+polar_art_02 <- function(seed, n, palette) { # create function of seed, n, and palette
   
   # set the state of the random number generator
   set.seed(seed)
@@ -207,8 +207,8 @@ polar_art <- function(seed, n, palette) { # create function of seed, n, and pale
   dat <- tibble( # create tibble output
     x0 = runif(n), # generate random noise
     y0 = runif(n), # generate random noise
-    x1 = x0 + runif(n, min = 0, max = 0), # create column that generates noise/value slightly above or below x0
-    y1 = y0 + runif(n, min = 0, max = 30), # create column that generates noise/value slightly above or below y0
+    x1 = x0 + runif(n, min = 0, max = 30), # create swirl appearance of visualization
+    y1 = y0 + runif(n, min = 0, max = 0), # less overlapping of line segments
     shade = runif(n), # assign n random values to shade variable
     size = runif(n) # assign n random values to size variable
   )
@@ -234,12 +234,64 @@ polar_art <- function(seed, n, palette) { # create function of seed, n, and pale
     theme_void() # remove graph lines and tickmarks 
 }
 
-polar_art(seed = 300, n = 10000, palette = c("dodgerblue", "lightcyan", "lightgreen"))
-polar_art(seed = 5000, n = 10000, palette = c("orangered", "darkred", "coral"))
-polar_art(seed = 1, n = 10000, palette = c("yellow", "black", "blue"))
+polar_art_02(seed = 300, n = 50, palette = c("dodgerblue", "cyan", "green"))
+polar_art_02(seed = 5000, n = 10000, palette = c("orangered", "darkred", "coral"))
+polar_art_02(seed = 1, n = 10000, palette = c("yellow", "black", "blue"))
 
 
 ```
+
+
+
+```{r}
+
+
+## learning about colors
+
+# library necessary packages
+library(scales)
+library(ggthemes)
+
+# create object with 5 colors
+pal <- c("#cdb4db", "#ffc8dd", "#ffafcc", "#bde0fe", "#a2d2ff")
+
+# show these 5 colors
+show_col(pal)
+
+# create continuous color scale for pal object
+palette_fn <- colorRampPalette(pal)
+
+# have 100 colors on the color spectrum
+palette_fn(100)
+
+# show the image of the color gradient
+image( # create image
+  x = matrix(1:100, ncol = 1), # set matrix
+  col = palette_fn(100), # set the colors to use
+  useRaster = TRUE, 
+  axes = FALSE # remove axis
+)
+
+#explore color palette from canvas
+canva_palettes[[101]]
+
+# show palette 
+show_col(canva_palettes[[101]])
+
+# sample a canva palette at random
+sample_canva <- function(seed = NULL) {
+  if(!is.null(seed)) set.seed(seed)
+  sample(ggthemes::canva_palettes, 1)[[1]]
+}
+
+# use sample_canva function for random color palettes
+polar_art(seed = 2, n = 100, palette = sample_canva(seed = 2))
+polar_art(seed = 2, n = 100, palette = sample_canva(seed = 3))
+polar_art(seed = 2, n = 100, palette = sample_canva(seed = 4))
+
+
+```
+
 
 
 
