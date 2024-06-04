@@ -1,0 +1,132 @@
+---
+title: "personal-copy-gen-art"
+author: "Katie Cheslick"
+format: html
+editor: visual
+---
+
+```{r}
+
+
+# load in packages to make art
+library(ggplot2)
+library(tibble)
+
+
+# load in data set 
+mpg
+
+
+# create initial visualization using mpg data set 
+mpg |>
+  ggplot(aes(displ, hwy, colour = drv)) + 
+  geom_point()
+
+
+mpg |> # use mpg data set
+  ggplot(aes(displ, hwy, colour = drv, size = cyl)) + # create plot using certain columns
+  geom_point(show.legend = FALSE) + # make data points and remove legend
+  theme_void() + # get rid of gridlines and tickmarks 
+  scale_color_brewer() # make colors a gradient
+
+
+```
+
+
+
+```{r}
+
+
+# create new visualization
+mpg |> # use mpg data set
+  ggplot(aes(displ, hwy, colour = drv)) + # use certain columns from data set
+  geom_point(show.legend = FALSE, size = 4) + # create large points, remove legend
+  geom_point(show.legend = FALSE, size = 1, colour = "#222222") + # create smaller black points in same location 
+  coord_polar() + # circular plot form rather than standard form
+  theme_void() + # remove gridlines and tickmarks 
+  scale_color_brewer() # make colors a gradient
+
+
+```
+
+
+
+```{r}
+
+
+## EXERCISE 1
+
+mpg |> # use mpg data set
+  ggplot(aes(displ, hwy)) + # use certain columns from data set
+  geom_point(show.legend = FALSE, size = 28) + # create large points, remove legend
+  geom_point(show.legend = FALSE, size = 3, colour = "blue") + # create smaller black points in same location 
+  geom_point(show.legend = FALSE, size = 0.5, colour = "violet") +
+  coord_polar() + # circular plot form rather than standard form
+  theme_void() # remove gridlines and tickmarks 
+
+
+```
+
+
+```{r}
+
+
+# make uniformly distributed random numbers
+set.seed(1) # set code to deteremine the same random numbers, with any seed number value
+n <- 50 # set 50 rows 
+dat <- tibble( # create tibble output
+  x0 = runif(n), # create column that generates noise/random values
+  y0 = runif(n), # create column that generates noise/random values
+  x1 = x0 + runif(n, min = -.2, max = .2), # create column that generates noise/value slightly above or below x0
+  y1 = y0 + runif(n, min = -.2, max = .2), # create column that generates noise/value slightly above or below y0
+  shade = runif(n), # assign n random values to shade variable
+  size = runif(n) # assign n random values to size variable
+)
+
+dat
+
+
+```
+
+
+```{r}
+
+
+# use the data above to create visualization
+dat |> # use dat data set
+  ggplot(aes( # create ggplot
+    x = x0, # set x axis
+    y = y0, # set y axis
+    xend = x1, 
+    yend = y1,
+    colour = shade, # color diff points by shade variable
+    size = size # adjust size of points by size variable
+  )) +
+  geom_segment(show.legend = FALSE) +
+  coord_polar() +
+  scale_y_continuous(expand = c(0, 0)) +
+  scale_x_continuous(expand = c(0, 0)) + 
+  scale_color_viridis_c() + 
+  scale_size(range = c(0, 10)) + 
+  theme_void()
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
