@@ -110,18 +110,70 @@ dat |> # use dat data set
   scale_y_continuous(expand = c(0, 0)) + # remove extra empty space around plot
   scale_x_continuous(expand = c(0, 0)) + # remove extra empty space around plot
   scale_color_viridis_c() + # set color scheme
-  scale_size(range = c(0, 10)) + 
+  scale_size(range = c(0, 10)) + # set size of points from 0 to 10
   theme_void() # remove graph lines and tickmarks 
 
 
 ```
 
 
+```{r}
+
+
+# create function called polar art that can be used multiple times 
+
+polar_art <- function(seed, n, palette) { # create function of seed, n, and palette
+  
+  # set the state of the random number generator
+  set.seed(seed)
+  
+  # data frame containing random values for aesthetics we might want to use in the art
+  dat <- tibble( # create tibble output
+    x0 = runif(n), # generate random noise
+    y0 = runif(n), # generate random noise
+    x1 = x0 + runif(n, min = -.2, max = .2), # create column that generates noise/value slightly above or below x0
+    y1 = y0 + runif(n, min = -.2, max = .2), # create column that generates noise/value slightly above or below y0
+    shade = runif(n), # assign n random values to shade variable
+    size = runif(n) # assign n random values to size variable
+  )
+  
+  
+  # plot segments using polar coordinates and a gradient palette
+  
+  dat |> # use dat data set
+    ggplot(aes( # create ggplot
+      x = x0, # set x axis
+      y = y0, # set y axis
+      xend = x1, # create line from x0 to x1
+      yend = y1, # create line from y0 to y1
+      colour = shade, # color by shade variable
+      size = size # size by size variable 
+    )) +
+    geom_segment(show.legend = FALSE) + # remove legend for line segments
+    coord_polar() + # radial data points
+    scale_y_continuous(expand = c(0, 0)) + # remove extra space around plot
+    scale_x_continuous(expand = c(0, 0)) + # remove extra space around plot
+    scale_colour_gradientn(colours = palette) + # set gradient color scheme
+    scale_size(range = c(0, 10)) + # set size of points from 0 to 10
+    theme_void() # remove graph lines and tickmarks 
+}
+
+
+```
 
 
 
+```{r}
 
 
+# use polar art function to create pieces with the same style 
+
+polar_art(seed = 1, n = 500, palette = c("antiquewhite", "orange", "bisque"))
+polar_art(seed = 1, n = 500, palette = c("red", "black", "white"))
+polar_art(seed = 2, n = 50, palette = c("red", "black", "white"))
+
+
+```
 
 
 
