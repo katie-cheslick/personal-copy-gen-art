@@ -57,7 +57,7 @@ mpg |> # use mpg data set
 ```{r}
 
 
-## EXERCISE 1
+## INTRODUCTORY EXERCISE 1
 
 mpg |> # use mpg data set
   ggplot(aes(displ, hwy)) + # use certain columns from data set
@@ -179,7 +179,7 @@ polar_art(seed = 2, n = 50, palette = c("red", "black", "white"))
 ```{r}
 
 
-## EXERCISE 2 Part 1
+## INTRODUCTORY EXERCISE 2 Part 1
 
 # manipulate polar art function to create my own pieces
 
@@ -194,7 +194,7 @@ polar_art(seed = 1, n = 10000, palette = c("yellow", "black", "blue"))
 ```{r}
 
 
-## EXERCISE 2 Part 2
+## INTRODUCTORY EXERCISE 2 Part 2
 
 # alter polar art function
 
@@ -234,6 +234,7 @@ polar_art_02 <- function(seed, n, palette) { # create function of seed, n, and p
     theme_void() # remove graph lines and tickmarks 
 }
 
+# create images using new polar art 2 function
 polar_art_02(seed = 300, n = 50, palette = c("dodgerblue", "cyan", "green"))
 polar_art_02(seed = 5000, n = 10000, palette = c("orangered", "darkred", "coral"))
 polar_art_02(seed = 1, n = 10000, palette = c("yellow", "black", "blue"))
@@ -285,15 +286,33 @@ sample_canva <- function(seed = NULL) {
 }
 
 # use sample_canva function for random color palettes
+# same configuration but diff color schemes by adjusting sample canva
 polar_art(seed = 2, n = 100, palette = sample_canva(seed = 2))
 polar_art(seed = 2, n = 100, palette = sample_canva(seed = 3))
 polar_art(seed = 2, n = 100, palette = sample_canva(seed = 4))
+
+# use sample_canva function for random color palettes
+# diff configuration by adjusting seed but same color schemes
+polar_art(seed = 5, n = 100, palette = sample_canva(seed = 1))
+polar_art(seed = 6, n = 100, palette = sample_canva(seed = 1))
+polar_art(seed = 7, n = 100, palette = sample_canva(seed = 1))
+
 
 
 ```
 
 
+```{r}
 
+
+## INTRODUCTORY EXERCISE 3 Part 1
+
+
+
+
+
+
+```
 
 
 
