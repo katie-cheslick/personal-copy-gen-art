@@ -308,7 +308,7 @@ polar_art(seed = 7, n = 100, palette = sample_canva(seed = 1))
 ## INTRODUCTORY EXERCISE 3 Part 1
 
 sample_canva <- function(seed = NULL) { # create function that samples canva palettes at random
-  if(!is.null(seed)) set.seed(seed) 
+  if(!is.null(seed)) set.seed(seed) # allow for reproducibility in random number generation
   sample(ggthemes::canva_palettes, 1)[[1]] # use canva_palettes from ggthemes package
 }
 
@@ -319,10 +319,126 @@ show_col(canva_palettes[[99]])
 show_col(canva_palettes[[97]])
 show_col(canva_palettes[[95]])
 
+## INTRODUCTORY EXERCISE 3 Part 2
+
+## INTRODUCTORY EXERCISE 3 Part 3
+
 
 ```
 
+```{r}
 
+
+# learning about composition
+
+# create function that generates tibbles with random numbers
+sample_data <- function(seed = NULL, n = 100){ # create function 
+  if(!is.null(seed)) set.seed(seed) # allow for reproducibility in random number generation
+  dat <- tibble( # generate tibble
+    x0 = runif(n), # generate random noise column
+    y0 = runif(n), # generate random noise column
+    x1 = x0 + runif(n, min = -.2, max = .2), # create column that generates noise/value slightly above or below x0
+    y1 = y0 + runif(n, min = -.2, max = .2), # create column that generates noise/value slightly above or below y0
+    shade = runif(n), # assign random values to shade variable
+    size = runif(n), # assign random values to size variable
+    shape = factor(sample(0:22, size = n, replace = TRUE)) # convert random values into a factor
+  )
+}
+
+
+# create stylized plot
+polar_styled_plot <- function(data = NULL, palette) { 
+  ggplot( # use ggplot
+    data = data, # specify data set
+    mapping = aes(
+      x = x0, # set x axis
+      y = y0, # set y axis
+      xend = x1, # line from x0 to x1
+      yend = y1, # line from y0 to y1
+      colour = shade, # color according to shade column of data set
+      size = size # size according to size column of data set
+    )) + 
+    coord_polar(clip = "off") + 
+    scale_y_continuous(
+      expand = c(0, 0),
+      limits = c(0, 1), 
+      oob = scales::oob_keep
+    ) +
+    scale_x_continuous(
+      expand = c(0, 0), 
+      limits = c(0, 1), 
+      oob = scales::oob_keep
+    ) + 
+    scale_colour_gradientn(colours = palette) + 
+    scale_size(range = c(0, 10)) + 
+    theme_void() + 
+    guides(
+      colour = guide_none(),
+      size = guide_none(),
+      fill = guide_none(),
+      shape = guide_none()
+    )
+}
+
+
+# use polar styled plot to take care of set up and change choice of geom to change output
+
+dat <- sample_data(n = 100, seed = 1) 
+pal <- sample_canva(seed = 1)
+
+polar_styled_plot(data = dat, palette = pal) + geom_segment()
+polar_styled_plot(data = dat, palette = pal) + geom_path()
+polar_styled_plot(data = dat, palette = pal) + geom_point()
+
+
+# use diplyr and create one visualization w multiple data sets
+
+library(dplyr)
+
+dat1 <- sample_data(n = 2000, seed = 123) 
+dat2 <- sample_data(n = 100, seed = 456) |>  
+  mutate(y0 = .3 + y0 * .6, y1 = .3)
+
+polar_styled_plot(palette = sample_canva(seed = 7)) + 
+  geom_segment(
+    data = dat1 |> mutate(size = size * 3)
+  ) + 
+  geom_segment(
+    data = dat2 |> mutate(size = size / 5), 
+    lineend = "round", 
+    colour = "white"
+  ) +
+  geom_segment(
+    data = dat2 |> mutate(size = size / 40), 
+    lineend = "round", 
+    colour = "#222222"
+  ) +
+  geom_point(
+    data = dat2 |> mutate(size = size * 2),
+    colour = "#222222"
+  )
+
+
+# additional visualization with more symmetry
+dat <- sample_data(n = 2000, seed = 123) |> # where seed changes where the lines are
+  mutate(y1 = y0, size = size / 2)
+
+polar_styled_plot(palette = sample_canva(seed = 425)) + # where seed changes the color scheme
+  geom_segment(data = dat) + 
+  geom_segment(data = dat |> mutate(y1 = y1 - .2, y0 = y0 - .2)) +
+  geom_segment(data = dat |> mutate(y1 = y1 - .4, y0 = y0 - .4))
+
+
+# like visulaization above but choppier lines
+dat <- sample_data(n = 1000, seed = 1) |>
+  mutate(y1 = y0, size = size / 4)
+
+polar_styled_plot(palette = sample_canva(seed = 2)) + 
+  geom_segment(data = dat, linetype = "331311") # where line type changes choppiness of lines
+
+
+
+```
 
 
 
